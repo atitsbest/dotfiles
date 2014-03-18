@@ -75,7 +75,7 @@ if executable('ag')
 endif
 
 " Color scheme
-colorscheme default
+colorscheme Tomorrow
 highlight NonText guibg=#060606
 highlight Folded  guibg=#0A0A0A guifg=#9090D0
 
@@ -138,6 +138,11 @@ nnoremap <C-l> <C-w>l
 let g:syntastic_check_on_open=1
 
 let &t_Co=256
+
+set nowrap
+let g:gofmt_command="goimports"
+
+let g:airline_powerline_fonts = 1
 
 " Local config
 if filereadable($HOME . "/.vimrc.local")
