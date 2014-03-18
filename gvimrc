@@ -16,7 +16,7 @@ set guioptions-=r
 set guioptions-=b
 
 " Font (Powerline)
-set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 10
+set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 9
 
 " Local config
 if filereadable($HOME . "/.gvimrc.local")
