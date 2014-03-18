@@ -140,7 +140,13 @@ let g:syntastic_check_on_open=1
 let &t_Co=256
 
 set nowrap
+
+" Go
 let g:gofmt_command="goimports"
+filetype plugin indent off
+set rtp+=$GOROOT/misc/vim
+filetype plugin indent on
+syntax on
 
 let g:airline_powerline_fonts = 1
 
