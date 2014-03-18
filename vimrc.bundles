@@ -27,7 +27,6 @@ Bundle 'bling/vim-airline'
 Bundle 'SirVer/ultisnips'
 Bundle "jnwhiteh/vim-golang"
 Bundle "scrooloose/nerdtree"
-Bundle "townk/vim-autoclose"
 
 if filereadable(expand("~/.vimrc.bundles.local"))
   source ~/.vimrc.bundles.local
