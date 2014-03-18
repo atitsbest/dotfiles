@@ -152,6 +152,9 @@ autocmd BufWritePre *.go Fmt
 " Airline
 let g:airline_powerline_fonts = 1
 
+" Preview-Window bei Autocomplete nicht öffnen
+:set completeopt-=preview
+
 " Local config
 if filereadable($HOME . "/.vimrc.local")
   source ~/.vimrc.local

@@ -10,6 +10,11 @@ set guioptions+=c
 " Größe
 set lines=50 columns=100
 
+" Scroll-Leisten entfernen
+set guioptions-=l
+set guioptions-=r
+set guioptions-=b
+
 " Font (Powerline)
 set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 10
 
