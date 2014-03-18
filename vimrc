@@ -55,8 +55,8 @@ augroup vimrcEx
 augroup END
 
 " Softtabs, 2 spaces
-set tabstop=2
-set shiftwidth=2
+set tabstop=4
+set shiftwidth=4
 set expandtab
 
 " Display extra whitespace
@@ -142,12 +142,14 @@ let &t_Co=256
 set nowrap
 
 " Go
-let g:gofmt_command="goimports"
 filetype plugin indent off
 set rtp+=$GOROOT/misc/vim
 filetype plugin indent on
 syntax on
+let g:gofmt_command="goimports"
+autocmd BufWritePre *.go Fmt
 
+" Airline
 let g:airline_powerline_fonts = 1
 
 " Local config
