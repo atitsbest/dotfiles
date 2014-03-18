@@ -7,8 +7,11 @@ set guioptions-=T
 " Use console dialogs
 set guioptions+=c
 
+" Größe
+set lines=50 columns=100
+
 " Font (Powerline)
-set guifont=Dejavu\ Sans\ Mono\ for\ Powerline:h12
+set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 10
 
 " Local config
 if filereadable($HOME . "/.gvimrc.local")
