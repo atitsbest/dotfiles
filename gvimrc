@@ -1,3 +1,6 @@
+" Zsh setzten
+set shell=zsh\ -i
+
 " No audible bell
 set vb
 

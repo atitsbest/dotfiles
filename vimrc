@@ -149,6 +149,12 @@ syntax on
 let g:gofmt_command="goimports"
 autocmd BufWritePre *.go Fmt
 
+"Folding
+set foldmethod=syntax
+set foldnestmax=10
+set nofoldenable
+set foldlevel=0
+
 " Airline
 let g:airline_powerline_fonts = 1
 
