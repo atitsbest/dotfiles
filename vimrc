@@ -149,6 +149,10 @@ syntax on
 let g:gofmt_command="goimports"
 autocmd BufWritePre *.go Fmt
 
+" Godef
+let g:godef_same_file_in_same_window=1
+let g:godef_split=0
+
 "Folding
 set foldmethod=syntax
 set foldnestmax=10
