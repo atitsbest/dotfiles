@@ -159,6 +159,10 @@ let g:airline_powerline_fonts = 1
 " Preview-Window bei Autocomplete nicht öffnen
 :set completeopt-=preview
 
+" Tag schließen.
+autocmd FileType html imap <space><space> </<C-X><C-O><esc>
+
+
 " Local config
 if filereadable($HOME . "/.vimrc.local")
   source ~/.vimrc.local
