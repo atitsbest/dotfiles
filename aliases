@@ -34,5 +34,8 @@ alias rk="rake"
 alias s="rspec"
 alias z="zeus"
 
+# Tmux
+alias tmux="tmux -2" # Damit 256 Farben angezeigt werden.
+
 # Include custom aliases
 [[ -f ~/.aliases.local ]] && source ~/.aliases.local
