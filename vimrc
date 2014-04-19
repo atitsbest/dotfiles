@@ -159,6 +159,9 @@ let g:airline_powerline_fonts = 1
 " Preview-Window bei Autocomplete nicht öffnen
 :set completeopt-=preview
 
+" Damit mit der Mouse gescrollt werden kann.
+set mouse=a
+
 " Local config
 if filereadable($HOME . "/.vimrc.local")
   source ~/.vimrc.local
