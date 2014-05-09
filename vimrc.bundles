@@ -23,9 +23,10 @@ Bundle 'SirVer/ultisnips'
 Bundle "scrooloose/nerdtree"
 Bundle "fatih/vim-go"
 Bundle "mattn/emmet-vim"
+Bundle 'groenewege/vim-less'
 
 if filereadable(expand("~/.vimrc.bundles.local"))
   source ~/.vimrc.bundles.local
 endif
 
-filetype on
+filetype plugin indent on
