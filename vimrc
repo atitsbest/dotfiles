@@ -160,7 +160,11 @@ let g:airline_powerline_fonts = 1
 :set completeopt-=preview
 
 " Damit mit der Mouse gescrollt werden kann.
-set mouse=a
+set mouse+=a
+if &term =~ '^screen'
+    " tmux knows the extended mouse mode
+    set ttymouse=xterm2
+endif
 
 " Tag schließen.
 autocmd FileType html imap <space><space> </<C-X><C-O><esc>
