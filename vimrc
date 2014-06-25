@@ -149,6 +149,7 @@ filetype plugin indent off
 set rtp+=$GOROOT/misc/vim
 filetype plugin indent on
 syntax on
+let g:go_auto_type_info = 1
 
 "Folding
 set foldmethod=syntax
