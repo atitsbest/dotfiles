@@ -59,7 +59,7 @@ export PATH=".git/safe/../../bin:$PATH"
 # Prompt
 source ~/.zsh/git-prompt/zshrc.sh
 PROMPT='%B%m%~%b$(git_super_status) %# '
-
+ZSH_THEME_GIT_PROMPT_NOCACHE=1 # Damit der Status immer aktualisiert wird.
 
 # aliases
 [[ -f ~/.aliases ]] && source ~/.aliases
