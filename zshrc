@@ -56,6 +56,11 @@ fi
 # mkdir .git/safe in the root of repositories you trust
 export PATH=".git/safe/../../bin:$PATH"
 
+# Prompt
+source ~/.zsh/git-prompt/zshrc.sh
+PROMPT='%B%m%~%b$(git_super_status) %# '
+
+
 # aliases
 [[ -f ~/.aliases ]] && source ~/.aliases
 
