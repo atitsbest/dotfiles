@@ -19,7 +19,5 @@ ln -sf $DIR/vim $HOME/.vim
 ln -sf $DIR/zsh $HOME/.zsh 
 
 # Vundle installieren
-if [ -d "~/.vim/bundle/vundle"  ]; then
-    git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
-fi
-
+git clone https://github.com/gmarik/Vundle.git ~/.vim/bundle/Vundle
+vim +PluginInstall +qall
