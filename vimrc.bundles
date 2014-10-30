@@ -1,7 +1,7 @@
 set nocompatible
 
 filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
+set rtp+=~/.vim/bundle/vundle
 call vundle#begin()
 
 " Let Vundle manage Vundle
@@ -22,11 +22,11 @@ Bundle "mattn/emmet-vim"
 Bundle 'groenewege/vim-less'
 
 " Autocomplete + Snippets
-Bundle 'Shougo/neocomplete'
-Bundle 'Shougo/neosnippet'
-Bundle 'Shougo/neosnippet-snippets'
-" Bundle 'Valloric/YouCompleteMe'
-" Bundle 'SirVer/ultisnips'
+" Bundle 'Shougo/neocomplete'
+" Bundle 'Shougo/neosnippet'
+" Bundle 'Shougo/neosnippet-snippets'
+Bundle 'Valloric/YouCompleteMe'
+Bundle 'SirVer/ultisnips'
 
 if filereadable(expand("~/.vimrc.bundles.local"))
   source ~/.vimrc.bundles.local

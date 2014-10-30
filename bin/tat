@@ -3,4 +3,4 @@
 # Attach to tmux session named the same as current directory.
 #
 
-tmux new-session -As "$(basename "$PWD" | tr . - )"
+tmux -2 new-session -As "$(basename "$PWD" | tr . - )"

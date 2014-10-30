@@ -39,12 +39,8 @@ augroup vimrcEx
     \   exe "normal g`\"" |
     \ endif
 
-  " Cucumber navigation commands
-  autocmd User Rails Rnavcommand step features/step_definitions -glob=**/* -suffix=_steps.rb
-  autocmd User Rails Rnavcommand config config -glob=**/* -suffix=.rb -default=routes
 
   " Set syntax highlighting for specific file types
-  autocmd BufRead,BufNewFile Appraisals set filetype=ruby
   autocmd BufRead,BufNewFile *.md set filetype=markdown
 
   " Enable spellchecking for Markdown
@@ -87,21 +83,6 @@ highlight Folded  guibg=#0A0A0A guifg=#9090D0
 set number
 set numberwidth=5
 
-" Tab completion
-" will insert tab at beginning of line,
-" will use completion if not at beginning
-set wildmode=list:longest,list:full
-set complete=.,w,t
-function! InsertTabWrapper()
-    let col = col('.') - 1
-    if !col || getline('.')[col - 1] !~ '\k'
-        return "\<tab>"
-    else
-        return "\<c-p>"
-    endif
-endfunction
-inoremap <Tab> <c-r>=InsertTabWrapper()<cr>
-
 " Exclude Javascript files in :Rtags via rails.vim due to warnings when parsing
 let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
 
@@ -136,6 +117,13 @@ map <ESC><ESC> :nohlsearch<CR>
 " configure syntastic syntax checking to check on open as well as save
 let g:syntastic_check_on_open=1
 
+" speed up syntax highlighting 
+set nocursorcolumn 
+set nocursorline 
+syntax sync minlines=256 
+set synmaxcol=128 
+set re=1 
+
 let &t_Co=256
 
 set nowrap
@@ -157,7 +145,7 @@ set foldlevel=0
 let g:airline_powerline_fonts = 1
 
 " Preview-Window bei Autocomplete nicht öffnen
-:set completeopt-=preview
+" set completeopt-=preview
 
 " Damit mit der Mouse gescrollt werden kann.
 set mouse+=a
@@ -166,44 +154,61 @@ if &term =~ '^screen'
     set ttymouse=xterm2
 endif
 
-" Tag schließen.
-autocmd FileType html imap <space><space> </<C-X><C-O><esc>
+" YCM
+let g:ycm_autoclose_preview_window_after_completion = 1 
+let g:ycm_min_num_of_chars_for_completion = 1 
 
-" Neocomplete
-" -----------
-" Disable AutoComplPop.
-let g:acp_enableAtStartup = 0
-" Use neocomplete.
-let g:neocomplete#enable_at_startup = 1
-" Use smartcase.
-let g:neocomplete#enable_smart_case = 1
-" Set minimum syntax keyword length.
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
-let g:neocomplete#enable_auto_select = 0
+let g:go_fmt_fail_silently = 1 
+let g:go_fmt_command = "gofmt" 
 
-" Recommended key-mappings.
-" <CR>: close popup and save indent.
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  " For no inserting <CR> key.
-  return pumvisible() ? neocomplete#close_popup() : "\<CR>"
-endfunction
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+au FileType go nmap gd <Plug>(go-def) 
+au FileType go nmap <Leader>s <Plug>(go-def-split) 
+au FileType go nmap <Leader>v <Plug>(go-def-vertical) 
+au FileType go nmap <Leader>t <Plug>(go-def-tab) 
 
-" SuperTab like snippets behavior.
-imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: pumvisible() ? "\<C-n>" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)"
-\: "\<TAB>"
+au FileType go nmap <Leader>i <Plug>(go-info) 
 
-" For snippet_complete marker.
-if has('conceal')
-  set conceallevel=2 concealcursor=i
-endif
+au FileType go nmap  <leader>r  <Plug>(go-run) 
+au FileType go nmap  <leader>b  <Plug>(go-build) 
+
+au FileType go nmap <Leader>d <Plug>(go-doc) 
+
+
+" ==================== UltiSnips ==================== 
+function! g:UltiSnips_Complete() 
+call UltiSnips#ExpandSnippetOrJump() 
+if g:ulti_expand_or_jump_res == 0 
+if pumvisible() 
+return "\<C-N>" 
+else 
+return "\<TAB>" 
+endif 
+endif 
+
+return "" 
+endfunction 
+ 
+function! g:UltiSnips_Reverse() 
+call UltiSnips#JumpBackwards() 
+if g:ulti_jump_backwards_res == 0 
+return "\<C-P>" 
+endif 
+
+return "" 
+endfunction 
+
+if !exists("g:UltiSnipsJumpForwardTrigger") 
+let g:UltiSnipsJumpForwardTrigger = "<tab>" 
+endif 
+
+if !exists("g:UltiSnipsJumpBackwardTrigger") 
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>" 
+endif 
+
+au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>" 
+au BufEnter * exec "inoremap <silent> " . g:UltiSnipsJumpBackwardTrigger . " <C-R>=g:UltiSnips_Reverse()<cr>" 
+ 
+
 
 " Local config
 if filereadable($HOME . "/.vimrc.local")
