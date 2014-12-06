@@ -20,6 +20,8 @@ Bundle "scrooloose/nerdtree"
 Bundle "fatih/vim-go"
 Bundle "mattn/emmet-vim"
 Bundle 'groenewege/vim-less'
+Bundle 'fatih/vim-nginx'
+Bundle 'fatih/molokai'
 
 " Autocomplete + Snippets
 " Bundle 'Shougo/neocomplete'

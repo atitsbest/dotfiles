@@ -12,6 +12,26 @@ set showcmd       " display incomplete commands
 set incsearch     " do incremental searching
 set laststatus=2  " Always display the status line
 set autowrite     " Automatically :write before running commands
+set encoding=utf-8  " Set default encoding to UTF-8
+set autowrite     " Automatically save before :next, :make etc.
+set autoread      " Automatically reread changed files without asking me anything
+
+set lazyredraw    " Wait to redraw "
+" Time out on key codes but not mappings.
+" Basically this makes terminal Vim work sanely.
+set notimeout
+set ttimeout
+set ttimeoutlen=10
+
+set ignorecase    " Search case insensitive...
+set smartcase     " ... but not when search pattern contains upper case characters
+
+" speed up syntax highlighting
+set nocursorcolumn
+set nocursorline
+syntax sync minlines=256
+set synmaxcol=128
+set re=1
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
@@ -128,7 +148,31 @@ let &t_Co=256
 
 set nowrap
 
-" Go
+" Some useful quickfix shortcuts
+":cc      see the current error
+":cn      next error
+":cp      previous error
+":clist   list all errors
+map <C-n> :cn<CR>
+map <C-m> :cp<CR>
+
+" Close quickfix easily
+nnoremap <leader>a :cclose<CR>
+
+" trim all whitespaces away
+nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
+
+"Reindent whoel file
+map <F7> mzgg=G`z<CR>
+
+" Resize splits when the window is resized
+au VimResized * :wincmd =
+
+
+" === nginx ===
+au FileType nginx setlocal noet ts=4 sw=4 sts=4
+
+" === Go ===
 filetype plugin indent off
 set rtp+=$GOROOT/misc/vim
 filetype plugin indent on
@@ -154,61 +198,58 @@ if &term =~ '^screen'
     set ttymouse=xterm2
 endif
 
-" YCM
-let g:ycm_autoclose_preview_window_after_completion = 1 
-let g:ycm_min_num_of_chars_for_completion = 1 
+" Neocomplete
+" -----------
+" Disable AutoComplPop.
 
-let g:go_fmt_fail_silently = 1 
-let g:go_fmt_command = "gofmt" 
+let g:acp_enableAtStartup = 0
+" " Use neocomplete.
+let g:neocomplete#enable_at_startup = 1
+" " Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+" " Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
+let g:neocomplete#enable_auto_select = 0
 
-au FileType go nmap gd <Plug>(go-def) 
-au FileType go nmap <Leader>s <Plug>(go-def-split) 
-au FileType go nmap <Leader>v <Plug>(go-def-vertical) 
-au FileType go nmap <Leader>t <Plug>(go-def-tab) 
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  " For no inserting <CR> key.
+  return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+endfunction
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
-au FileType go nmap <Leader>i <Plug>(go-info) 
+" SuperTab like snippets behavior.
+imap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)"
+\: "\<TAB>"
 
-au FileType go nmap  <leader>r  <Plug>(go-run) 
-au FileType go nmap  <leader>b  <Plug>(go-build) 
-
-au FileType go nmap <Leader>d <Plug>(go-doc) 
 
 
-" ==================== UltiSnips ==================== 
-function! g:UltiSnips_Complete() 
-call UltiSnips#ExpandSnippetOrJump() 
-if g:ulti_expand_or_jump_res == 0 
-if pumvisible() 
-return "\<C-N>" 
-else 
-return "\<TAB>" 
-endif 
-endif 
+" For snippet_complete marker.
+if has('conceal')
+  set conceallevel=2 concealcursor=i
+endif
 
-return "" 
-endfunction 
- 
-function! g:UltiSnips_Reverse() 
-call UltiSnips#JumpBackwards() 
-if g:ulti_jump_backwards_res == 0 
-return "\<C-P>" 
-endif 
+" === NerdTree ===
+" Open nerdtree in current dir, write our own custom function because
+" NerdTreeToggle just sucks and doesn't work for buffers
+function! g:NerdTreeFindToggle()
+    if nerdtree#isTreeOpen()
+        exec 'NERDTreeClose'
+    else
+        exec 'NERDTreeFind'
+    endif
+endfunction
 
-return "" 
-endfunction 
-
-if !exists("g:UltiSnipsJumpForwardTrigger") 
-let g:UltiSnipsJumpForwardTrigger = "<tab>" 
-endif 
-
-if !exists("g:UltiSnipsJumpBackwardTrigger") 
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>" 
-endif 
-
-au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>" 
-au BufEnter * exec "inoremap <silent> " . g:UltiSnipsJumpBackwardTrigger . " <C-R>=g:UltiSnips_Reverse()<cr>" 
- 
-
+" For toggling
+noremap <Leader>n :<C-u>call g:NerdTreeFindToggle()<cr> 
 
 " Local config
 if filereadable($HOME . "/.vimrc.local")
