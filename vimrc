@@ -13,6 +13,26 @@ set incsearch     " do incremental searching
 set laststatus=2  " Always display the status line
 set autowrite     " Automatically :write before running commands
 set lazyredraw
+set encoding=utf-8  " Set default encoding to UTF-8
+set autowrite     " Automatically save before :next, :make etc.
+set autoread      " Automatically reread changed files without asking me anything
+
+set lazyredraw    " Wait to redraw "
+" Time out on key codes but not mappings.
+" Basically this makes terminal Vim work sanely.
+set notimeout
+set ttimeout
+set ttimeoutlen=10
+
+set ignorecase    " Search case insensitive...
+set smartcase     " ... but not when search pattern contains upper case characters
+
+" speed up syntax highlighting
+set nocursorcolumn
+set nocursorline
+syntax sync minlines=256
+set synmaxcol=128
+set re=1
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
@@ -129,7 +149,31 @@ let &t_Co=256
 
 set nowrap
 
-" Go
+" Some useful quickfix shortcuts
+":cc      see the current error
+":cn      next error
+":cp      previous error
+":clist   list all errors
+map <C-n> :cn<CR>
+map <C-m> :cp<CR>
+
+" Close quickfix easily
+nnoremap <leader>a :cclose<CR>
+
+" trim all whitespaces away
+nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
+
+"Reindent whoel file
+map <F7> mzgg=G`z<CR>
+
+" Resize splits when the window is resized
+au VimResized * :wincmd =
+
+
+" === nginx ===
+au FileType nginx setlocal noet ts=4 sw=4 sts=4
+
+" === Go ===
 filetype plugin indent off
 set rtp+=$GOROOT/misc/vim
 filetype plugin indent on
@@ -222,14 +266,6 @@ endfunction
 
 " For toggling
 noremap <Leader>n :<C-u>call g:NerdTreeFindToggle()<cr> 
-
-" ========= CtrlP ==========
-let g:ctrlp_extensions = ['line']
-
-" Wildmenu completion {{{
-set wildmenu
-" set wildmode=list:longest
-set wildmode=list:full
 
 " Local config
 if filereadable($HOME . "/.vimrc.local")

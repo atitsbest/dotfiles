@@ -23,6 +23,7 @@ Bundle "mattn/emmet-vim"
 Bundle 'groenewege/vim-less'
 Bundle 'tpope/vim-fireplace'
 Bundle 'Valloric/MatchTagAlways'
+Bundle 'fatih/molokai'
 Bundle 'Valloric/YouCompleteMe'
 Bundle 'SirVer/ultisnips'
 Bundle 'fatih/vim-nginx'
