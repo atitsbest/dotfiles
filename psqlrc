@@ -21,3 +21,5 @@
 \set HISTCONTROL ignoredups
 \set COMP_KEYWORD_CASE upper
 \unset quiet
+
+\pset pager always

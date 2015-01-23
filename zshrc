@@ -66,3 +66,6 @@ ZSH_THEME_GIT_PROMPT_NOCACHE=1 # Damit der Status immer aktualisiert wird.
 
 # Local config
 [[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+export PATH="$HOME/.rbenv/plugins/ruby-build/bin:$PATH"

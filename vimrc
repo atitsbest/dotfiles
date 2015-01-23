@@ -12,6 +12,7 @@ set showcmd       " display incomplete commands
 set incsearch     " do incremental searching
 set laststatus=2  " Always display the status line
 set autowrite     " Automatically :write before running commands
+set lazyredraw
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
@@ -208,9 +209,39 @@ endif
 au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>" 
 au BufEnter * exec "inoremap <silent> " . g:UltiSnipsJumpBackwardTrigger . " <C-R>=g:UltiSnips_Reverse()<cr>" 
  
+" ==================== NerdTree ====================
+" " Open nerdtree in current dir, write our own custom function because
+" " NerdTreeToggle just sucks and doesn't work for buffers
+function! g:NerdTreeFindToggle()
+    if nerdtree#isTreeOpen()
+        exec 'NERDTreeClose'
+    else
+        exec 'NERDTreeFind'
+    endif
+endfunction
 
+" For toggling
+noremap <Leader>n :<C-u>call g:NerdTreeFindToggle()<cr> 
+
+" ========= CtrlP ==========
+let g:ctrlp_extensions = ['line']
+
+" Wildmenu completion {{{
+set wildmenu
+" set wildmode=list:longest
+set wildmode=list:full
 
 " Local config
 if filereadable($HOME . "/.vimrc.local")
   source ~/.vimrc.local
 endif
+
+map <leader>t :Rake test<cr>
+map <leader>s :Rserver -b 0.0.0.0<cr>
+map <leader>e :DBExecSQLUnderCursor<cr>
+
+" Reindent whole file
+map <leader>kd mzgg=G`z<cr>
+
+" Trim all whitespaces away
+nnoremap <leader>rw :%s/\s\+$//<cr>:let @/=''<cr>
