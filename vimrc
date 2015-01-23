@@ -12,6 +12,26 @@ set showcmd       " display incomplete commands
 set incsearch     " do incremental searching
 set laststatus=2  " Always display the status line
 set autowrite     " Automatically :write before running commands
+set encoding=utf-8  " Set default encoding to UTF-8
+set autowrite     " Automatically save before :next, :make etc.
+set autoread      " Automatically reread changed files without asking me anything
+
+set lazyredraw    " Wait to redraw "
+" Time out on key codes but not mappings.
+" Basically this makes terminal Vim work sanely.
+set notimeout
+set ttimeout
+set ttimeoutlen=10
+
+set ignorecase    " Search case insensitive...
+set smartcase     " ... but not when search pattern contains upper case characters
+
+" speed up syntax highlighting
+set nocursorcolumn
+set nocursorline
+syntax sync minlines=256
+set synmaxcol=128
+set re=1
 
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
@@ -39,12 +59,8 @@ augroup vimrcEx
     \   exe "normal g`\"" |
     \ endif
 
-  " Cucumber navigation commands
-  autocmd User Rails Rnavcommand step features/step_definitions -glob=**/* -suffix=_steps.rb
-  autocmd User Rails Rnavcommand config config -glob=**/* -suffix=.rb -default=routes
 
   " Set syntax highlighting for specific file types
-  autocmd BufRead,BufNewFile Appraisals set filetype=ruby
   autocmd BufRead,BufNewFile *.md set filetype=markdown
 
   " Enable spellchecking for Markdown
@@ -87,21 +103,6 @@ highlight Folded  guibg=#0A0A0A guifg=#9090D0
 set number
 set numberwidth=5
 
-" Tab completion
-" will insert tab at beginning of line,
-" will use completion if not at beginning
-set wildmode=list:longest,list:full
-set complete=.,w,t
-function! InsertTabWrapper()
-    let col = col('.') - 1
-    if !col || getline('.')[col - 1] !~ '\k'
-        return "\<tab>"
-    else
-        return "\<c-p>"
-    endif
-endfunction
-inoremap <Tab> <c-r>=InsertTabWrapper()<cr>
-
 " Exclude Javascript files in :Rtags via rails.vim due to warnings when parsing
 let g:Tlist_Ctags_Cmd="ctags --exclude='*.js'"
 
@@ -136,11 +137,42 @@ map <ESC><ESC> :nohlsearch<CR>
 " configure syntastic syntax checking to check on open as well as save
 let g:syntastic_check_on_open=1
 
+" speed up syntax highlighting 
+set nocursorcolumn 
+set nocursorline 
+syntax sync minlines=256 
+set synmaxcol=128 
+set re=1 
+
 let &t_Co=256
 
 set nowrap
 
-" Go
+" Some useful quickfix shortcuts
+":cc      see the current error
+":cn      next error
+":cp      previous error
+":clist   list all errors
+map <C-n> :cn<CR>
+map <C-m> :cp<CR>
+
+" Close quickfix easily
+nnoremap <leader>a :cclose<CR>
+
+" trim all whitespaces away
+nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
+
+"Reindent whoel file
+map <F7> mzgg=G`z<CR>
+
+" Resize splits when the window is resized
+au VimResized * :wincmd =
+
+
+" === nginx ===
+au FileType nginx setlocal noet ts=4 sw=4 sts=4
+
+" === Go ===
 filetype plugin indent off
 set rtp+=$GOROOT/misc/vim
 filetype plugin indent on
@@ -157,7 +189,7 @@ set foldlevel=0
 let g:airline_powerline_fonts = 1
 
 " Preview-Window bei Autocomplete nicht öffnen
-:set completeopt-=preview
+" set completeopt-=preview
 
 " Damit mit der Mouse gescrollt werden kann.
 set mouse+=a
@@ -166,18 +198,16 @@ if &term =~ '^screen'
     set ttymouse=xterm2
 endif
 
-" Tag schließen.
-autocmd FileType html imap <space><space> </<C-X><C-O><esc>
-
 " Neocomplete
 " -----------
 " Disable AutoComplPop.
+
 let g:acp_enableAtStartup = 0
-" Use neocomplete.
+" " Use neocomplete.
 let g:neocomplete#enable_at_startup = 1
-" Use smartcase.
+" " Use smartcase.
 let g:neocomplete#enable_smart_case = 1
-" Set minimum syntax keyword length.
+" " Set minimum syntax keyword length.
 let g:neocomplete#sources#syntax#min_keyword_length = 3
 let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 let g:neocomplete#enable_auto_select = 0
@@ -200,10 +230,26 @@ smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
 \ "\<Plug>(neosnippet_expand_or_jump)"
 \: "\<TAB>"
 
+
+
 " For snippet_complete marker.
 if has('conceal')
   set conceallevel=2 concealcursor=i
 endif
+
+" === NerdTree ===
+" Open nerdtree in current dir, write our own custom function because
+" NerdTreeToggle just sucks and doesn't work for buffers
+function! g:NerdTreeFindToggle()
+    if nerdtree#isTreeOpen()
+        exec 'NERDTreeClose'
+    else
+        exec 'NERDTreeFind'
+    endif
+endfunction
+
+" For toggling
+noremap <Leader>n :<C-u>call g:NerdTreeFindToggle()<cr> 
 
 " Local config
 if filereadable($HOME . "/.vimrc.local")

@@ -1,8 +1,8 @@
 set nocompatible
 
 filetype off
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+set rtp+=~/.vim/bundle/vundle
+call vundle#begin()
 
 " Let Vundle manage Vundle
 Bundle 'gmarik/vundle'
@@ -20,16 +20,19 @@ Bundle "scrooloose/nerdtree"
 Bundle "fatih/vim-go"
 Bundle "mattn/emmet-vim"
 Bundle 'groenewege/vim-less'
+Bundle 'fatih/vim-nginx'
+Bundle 'fatih/molokai'
 
 " Autocomplete + Snippets
-Bundle 'Shougo/neocomplete'
-Bundle 'Shougo/neosnippet'
-Bundle 'Shougo/neosnippet-snippets'
-" Bundle 'Valloric/YouCompleteMe'
-" Bundle 'SirVer/ultisnips'
+" Bundle 'Shougo/neocomplete'
+" Bundle 'Shougo/neosnippet'
+" Bundle 'Shougo/neosnippet-snippets'
+Bundle 'Valloric/YouCompleteMe'
+Bundle 'SirVer/ultisnips'
 
 if filereadable(expand("~/.vimrc.bundles.local"))
   source ~/.vimrc.bundles.local
 endif
 
+call vundle#end()
 filetype plugin indent on
