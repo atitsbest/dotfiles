@@ -11,6 +11,7 @@ done
 
 # history settings
 setopt histignoredups
+HISTFILE=~/.history
 SAVEHIST=4096
 HISTSIZE=4096
 
@@ -55,6 +56,7 @@ fi
 
 # mkdir .git/safe in the root of repositories you trust
 export PATH=".git/safe/../../bin:$PATH"
+export PATH="$PATH:~/dotfiles/bin"
 
 # Prompt
 source ~/.zsh/git-prompt/zshrc.sh
