@@ -1,5 +1,5 @@
 " Zsh setzten
-set shell=zsh\ -i
+" set shell=zsh\ -i
 
 " No audible bell
 set vb
@@ -19,7 +19,7 @@ set guioptions-=r
 set guioptions-=b
 
 " Font (Powerline)
-set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 9
+set guifont=DejaVu\ Sans\ Mono\ for\ Powerline\ 12
 
 " Local config
 if filereadable($HOME . "/.gvimrc.local")

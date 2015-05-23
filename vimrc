@@ -136,7 +136,14 @@ nnoremap <C-l> <C-w>l
 map <ESC><ESC> :nohlsearch<CR>
 
 " configure syntastic syntax checking to check on open as well as save
-let g:syntastic_check_on_open=1
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 0
 
 " speed up syntax highlighting 
 set nocursorcolumn 
@@ -219,39 +226,39 @@ au FileType go nmap  <leader>b  <Plug>(go-build)
 au FileType go nmap <Leader>d <Plug>(go-doc) 
 
 
-" ==================== UltiSnips ==================== 
-function! g:UltiSnips_Complete() 
-call UltiSnips#ExpandSnippetOrJump() 
-if g:ulti_expand_or_jump_res == 0 
-if pumvisible() 
-return "\<C-N>" 
-else 
-return "\<TAB>" 
-endif 
-endif 
-
-return "" 
-endfunction 
- 
-function! g:UltiSnips_Reverse() 
-call UltiSnips#JumpBackwards() 
-if g:ulti_jump_backwards_res == 0 
-return "\<C-P>" 
-endif 
-
-return "" 
-endfunction 
-
-if !exists("g:UltiSnipsJumpForwardTrigger") 
-let g:UltiSnipsJumpForwardTrigger = "<tab>" 
-endif 
-
-if !exists("g:UltiSnipsJumpBackwardTrigger") 
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>" 
-endif 
-
-au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>" 
-au BufEnter * exec "inoremap <silent> " . g:UltiSnipsJumpBackwardTrigger . " <C-R>=g:UltiSnips_Reverse()<cr>" 
+" " ==================== UltiSnips ==================== 
+" function! g:UltiSnips_Complete() 
+" call UltiSnips#ExpandSnippetOrJump() 
+" if g:ulti_expand_or_jump_res == 0 
+" if pumvisible() 
+" return "\<C-N>" 
+" else 
+" return "\<TAB>" 
+" endif 
+" endif 
+"
+" return "" 
+" endfunction 
+"  
+" function! g:UltiSnips_Reverse() 
+" call UltiSnips#JumpBackwards() 
+" if g:ulti_jump_backwards_res == 0 
+" return "\<C-P>" 
+" endif 
+"
+" return "" 
+" endfunction 
+"
+" if !exists("g:UltiSnipsJumpForwardTrigger") 
+" let g:UltiSnipsJumpForwardTrigger = "<tab>" 
+" endif 
+"
+" if !exists("g:UltiSnipsJumpBackwardTrigger") 
+" let g:UltiSnipsJumpBackwardTrigger="<s-tab>" 
+" endif 
+"
+" au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>" 
+" au BufEnter * exec "inoremap <silent> " . g:UltiSnipsJumpBackwardTrigger . " <C-R>=g:UltiSnips_Reverse()<cr>" 
  
 " ==================== NerdTree ====================
 " " Open nerdtree in current dir, write our own custom function because
