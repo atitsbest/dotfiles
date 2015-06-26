@@ -1,8 +1,10 @@
+set nocompatible  " Use Vim settings, rather then Vi settings
 " Leader
 let mapleader = " "
 
+set shell=bash
+
 set backspace=2   " Backspace deletes like most programs in insert mode
-set nocompatible  " Use Vim settings, rather then Vi settings
 set nobackup
 set nowritebackup
 set noswapfile    " http://robots.thoughtbot.com/post/18739402579/global-gitignore#comment-458413287
@@ -27,48 +29,41 @@ set ttimeoutlen=10
 set ignorecase    " Search case insensitive...
 set smartcase     " ... but not when search pattern contains upper case characters
 
-" speed up syntax highlighting
-set nocursorcolumn
-set nocursorline
-syntax sync minlines=256
-set synmaxcol=128
-set re=1
-
 " Switch syntax highlighting on, when the terminal has colors
 " Also switch on highlighting the last used search pattern.
 if (&t_Co > 2 || has("gui_running")) && !exists("syntax_on")
-  syntax on
+    syntax on
 endif
 
 if filereadable(expand("~/.vimrc.bundles"))
-  source ~/.vimrc.bundles
+    source ~/.vimrc.bundles
 endif
 
 filetype plugin indent on
 
 augroup vimrcEx
-  autocmd!
+    autocmd!
 
-  " For all text files set 'textwidth' to 78 characters.
-  autocmd FileType text setlocal textwidth=78
+    " For all text files set 'textwidth' to 78 characters.
+    autocmd FileType text setlocal textwidth=78
 
-  " When editing a file, always jump to the last known cursor position.
-  " Don't do it for commit messages, when the position is invalid, or when
-  " inside an event handler (happens when dropping a file on gvim).
-  autocmd BufReadPost *
-    \ if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |
-    \   exe "normal g`\"" |
-    \ endif
+    " When editing a file, always jump to the last known cursor position.
+    " Don't do it for commit messages, when the position is invalid, or when
+    " inside an event handler (happens when dropping a file on gvim).
+    autocmd BufReadPost *
+                \ if &ft != 'gitcommit' && line("'\"") > 0 && line("'\"") <= line("$") |
+                \   exe "normal g`\"" |
+                \ endif
 
 
-  " Set syntax highlighting for specific file types
-  autocmd BufRead,BufNewFile *.md set filetype=markdown
+    " Set syntax highlighting for specific file types
+    autocmd BufRead,BufNewFile *.md set filetype=markdown
 
-  " Enable spellchecking for Markdown
-  autocmd FileType markdown setlocal spell
+    " Enable spellchecking for Markdown
+    autocmd FileType markdown setlocal spell
 
-  " Automatically wrap at 80 characters for Markdown
-  autocmd BufRead,BufNewFile *.md setlocal textwidth=80
+    " Automatically wrap at 80 characters for Markdown
+    autocmd BufRead,BufNewFile *.md setlocal textwidth=80
 augroup END
 
 " Softtabs, 2 spaces
@@ -81,18 +76,18 @@ set list listchars=tab:»·,trail:·
 
 " Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
 if executable('ag')
-  " Use Ag over Grep
-  set grepprg=ag\ --nogroup\ --nocolor
+    " Use Ag over Grep
+    set grepprg=ag\ --nogroup\ --nocolor
 
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+    " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+    let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
-  " ag is fast enough that CtrlP doesn't need to cache
-  let g:ctrlp_use_caching = 0
+    " ag is fast enough that CtrlP doesn't need to cache
+    let g:ctrlp_use_caching = 0
 
-  " bind \ (backward slash) to grep shortcut
-  command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
-  nnoremap \ :Ag<Space>
+    " bind \ (backward slash) to grep shortcut
+    command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+    nnoremap \ :Ag<Space>
 endif
 
 " Color scheme
@@ -133,7 +128,7 @@ nnoremap <C-h> <C-w>h
 nnoremap <C-l> <C-w>l
 
 " Remove search highlight
-map <ESC><ESC> :nohlsearch<CR>
+" map <ESC><ESC> :nohlsearch<CR>
 
 " configure syntastic syntax checking to check on open as well as save
 set statusline+=%#warningmsg#
@@ -153,6 +148,9 @@ set synmaxcol=128
 set re=1 
 
 let &t_Co=256
+if exists('$TMUX')
+    set term=screen-256color
+endif
 
 set nowrap
 
@@ -206,77 +204,14 @@ if &term =~ '^screen'
     set ttymouse=xterm2
 endif
 
-" YCM
-let g:ycm_autoclose_preview_window_after_completion = 1 
-let g:ycm_min_num_of_chars_for_completion = 1 
-
-let g:go_fmt_fail_silently = 1 
-let g:go_fmt_command = "gofmt" 
-
-au FileType go nmap gd <Plug>(go-def) 
-au FileType go nmap <Leader>s <Plug>(go-def-split) 
-au FileType go nmap <Leader>v <Plug>(go-def-vertical) 
-au FileType go nmap <Leader>t <Plug>(go-def-tab) 
-
-au FileType go nmap <Leader>i <Plug>(go-info) 
-
-au FileType go nmap  <leader>r  <Plug>(go-run) 
-au FileType go nmap  <leader>b  <Plug>(go-build) 
-
-au FileType go nmap <Leader>d <Plug>(go-doc) 
-
-
-" " ==================== UltiSnips ==================== 
-" function! g:UltiSnips_Complete() 
-" call UltiSnips#ExpandSnippetOrJump() 
-" if g:ulti_expand_or_jump_res == 0 
-" if pumvisible() 
-" return "\<C-N>" 
-" else 
-" return "\<TAB>" 
-" endif 
-" endif 
-"
-" return "" 
-" endfunction 
-"  
-" function! g:UltiSnips_Reverse() 
-" call UltiSnips#JumpBackwards() 
-" if g:ulti_jump_backwards_res == 0 
-" return "\<C-P>" 
-" endif 
-"
-" return "" 
-" endfunction 
-"
-" if !exists("g:UltiSnipsJumpForwardTrigger") 
-" let g:UltiSnipsJumpForwardTrigger = "<tab>" 
-" endif 
-"
-" if !exists("g:UltiSnipsJumpBackwardTrigger") 
-" let g:UltiSnipsJumpBackwardTrigger="<s-tab>" 
-" endif 
-"
-" au BufEnter * exec "inoremap <silent> " . g:UltiSnipsExpandTrigger . " <C-R>=g:UltiSnips_Complete()<cr>" 
-" au BufEnter * exec "inoremap <silent> " . g:UltiSnipsJumpBackwardTrigger . " <C-R>=g:UltiSnips_Reverse()<cr>" 
- 
 " ==================== NerdTree ====================
-" " Open nerdtree in current dir, write our own custom function because
-" " NerdTreeToggle just sucks and doesn't work for buffers
-function! g:NerdTreeFindToggle()
-    if nerdtree#isTreeOpen()
-        exec 'NERDTreeClose'
-    else
-        exec 'NERDTreeFind'
-    endif
-endfunction
-
+let NERDTreeWinPos="right"
 " For toggling
-noremap <Leader>n :<C-u>call g:NerdTreeFindToggle()<cr> 
+noremap <Leader>n :NERDTreeToggle<CR>
 
 " Local config
 if filereadable($HOME . "/.vimrc.local")
-  source ~/.vimrc.local
+    source ~/.vimrc.local
 endif
 
 map <leader>t :Rake test<cr>
@@ -288,3 +223,38 @@ map <leader>kd mzgg=G`z<cr>
 
 " Trim all whitespaces away
 nnoremap <leader>rw :%s/\s\+$//<cr>:let @/=''<cr>
+
+" for tmux to automatically set paste and nopaste mode at the time pasting (as
+" happens in VIM UI)
+function! WrapForTmux(s)
+    if !exists('$TMUX')
+        return a:s
+    endif
+
+    let tmux_start = "\<Esc>Ptmux;"
+    let tmux_end = "\<Esc>\\"
+
+    return tmux_start . substitute(a:s, "\<Esc>", "\<Esc>\<Esc>", 'g') . tmux_end
+endfunction
+
+let &t_SI .= WrapForTmux("\<Esc>[?2004h")
+let &t_EI .= WrapForTmux("\<Esc>[?2004l")
+
+function! XTermPasteBegin()
+    set pastetoggle=<Esc>[201~
+    set paste
+    return ""
+endfunction
+
+inoremap <special> <expr> <Esc>[200~ XTermPasteBegin()
+
+" Tmux Cursor shape for insert.
+if exists('$ITERM_PROFILE')
+    if exists('$TMUX') 
+        let &t_SI = "\<Esc>[3 q"
+        let &t_EI = "\<Esc>[0 q"
+    else
+        let &t_SI = "\<Esc>]50;CursorShape=1\x7"
+        let &t_EI = "\<Esc>]50;CursorShape=0\x7"
+    endif
+end

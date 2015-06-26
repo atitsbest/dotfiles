@@ -19,6 +19,7 @@ Bundle 'tpope/vim-rbenv'
 Bundle 'vim-scripts/tComment'
 Bundle 'bling/vim-airline'
 Bundle "scrooloose/nerdtree"
+Bundle "xuyuanp/nerdtree-git-plugin"
 Bundle "fatih/vim-go"
 Bundle "mattn/emmet-vim"
 Bundle 'groenewege/vim-less'
